@@ -1,5 +1,5 @@
-require "yaml"
-MESSAGES = YAML.load_file("calculator_messages.yml")
+require 'yaml'
+MESSAGES = YAML.load_file('calculator_messages.yml')
 
 def prompt(message)
   puts "=> #{message}"
@@ -10,15 +10,15 @@ def number?(num)
 end
 
 def operation_to_message(operator)
-  word = case operator
+  case operator
   when "1"
-    return "Adding"
+    "Adding"
   when "2"
-    return "Subtracting"
+    "Subtracting"
   when "3"
-    return "Dividing"
+    "Dividing"
   when "4"
-    return "Multiplying"
+    "Multiplying"
   end
 end
 
