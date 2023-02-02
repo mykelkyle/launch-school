@@ -6,7 +6,12 @@ def number?(num)
   num.to_i.to_s == num || num.to_f.to_s == num
 end
 
+def line_break
+  prompt("-" * 60)
+end
+
 prompt("Welcome to the Mortgage Calculator! Please enter your name:")
+line_break
 
 name = ''
 loop do
@@ -66,7 +71,8 @@ loop do
     prompt("Months:")
     loan_duration_months = gets.to_i
 
-    if number?(loan_duration_months.to_s) && (loan_duration_months >= 0 && loan_duration_months < 12)
+    if number?(loan_duration_months.to_s) && (loan_duration_months >= 0 &&
+    loan_duration_months < 12)
       break
     else
       prompt("Invalid input, try again.")
@@ -75,17 +81,22 @@ loop do
 
   loan_duration = (loan_duration_years * 12) + loan_duration_months
 
-  monthly_payment = loan_amount * (monthly_interest_rate / (1 - (1 + monthly_interest_rate)**(-loan_duration)))
+  monthly_payment = loan_amount * (monthly_interest_rate / (1 -
+  (1 + monthly_interest_rate)**(-loan_duration)))
 
   total_cost = monthly_payment * loan_duration
 
   total_interest = total_cost - loan_amount
 
-  prompt("Monthly payment: $#{format('%.2f', monthly_payment.to_f)}")
+  line_break
+  prompt("Monthly payment: $#{(format'%.2f', monthly_payment.to_f)}")
   prompt("Total cost: $#{format('%.2f', total_cost.to_f)}")
   prompt("Total interest: $#{format('%.2f', total_interest.to_f)}")
 
-  prompt("Would you like to perform another calculation? (Y to calculate again)")
+  prompt("Would you like to perform another calculation? (Y to continue)")
   response = gets.chomp
   break unless response.downcase.start_with?('y')
 end
+
+line_break
+prompt("Thank you for using the Mortgage Calculator, #{name}!")
