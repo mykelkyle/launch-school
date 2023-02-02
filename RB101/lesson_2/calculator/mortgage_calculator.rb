@@ -75,10 +75,12 @@ loop do
     prompt("Months:")
     loan_duration_months = gets.chomp
 
-    if number?(loan_duration_months) && (loan_duration_months.to_i < 12 && loan_duration_months.to_i >= 0)
+    if number?(loan_duration_months) && (loan_duration_months.to_i < 12 &&
+    loan_duration_months.to_i >= 0)
       break
     else
-      prompt("Invalid input, try again. Please enter a number between 0 and 11.")
+      prompt("Invalid input, try again.
+      Please enter a number between 0 and 11.")
     end
   end
 
@@ -92,11 +94,12 @@ loop do
   total_interest = total_cost - loan_amount
 
   line_break
-  prompt("Monthly payment: $#{(format'%.2f', monthly_payment.to_f)}")
+  prompt("Monthly payment: $#{(format '%.2f', monthly_payment.to_f)}")
   prompt("Total cost: $#{format('%.2f', total_cost.to_f)}")
   prompt("Total interest: $#{format('%.2f', total_interest.to_f)}")
 
   prompt("Would you like to perform another calculation? (Y to continue)")
+
   response = gets.chomp
   break unless response.downcase.start_with?('y')
 end
