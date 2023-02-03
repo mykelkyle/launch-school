@@ -35,7 +35,13 @@ loop do
 
   loop do
     prompt("What is the loan amount?")
-    loan_amount = gets.chomp.to_i
+    loan_amount_input = gets.chomp
+    if loan_amount_input.include?(",")
+      prompt("Invalid input, try again. Please do not enter commas.")
+      next
+    else
+      loan_amount = loan_amount_input.to_i
+    end
 
     if number?(loan_amount.to_s) && loan_amount > 0
       break
