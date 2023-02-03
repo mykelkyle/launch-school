@@ -16,7 +16,7 @@ line_break
 name = ''
 loop do
   name = gets.chomp
-  if name.empty?
+  if name.strip.empty?
     prompt("Make sure to enter a valid name.")
   else
     break
@@ -44,7 +44,7 @@ loop do
     end
   end
 
-  # APR -----------
+# APR -----------
 
   loop do
     prompt("What is your APR%?")
@@ -59,7 +59,7 @@ loop do
 
   monthly_interest_rate = (apr.to_f / 100) / 12
 
-  # Loan Duration -----------
+# Loan Duration -----------
 
   loop do
     prompt("What is the loan duration? (Years/Months)")
@@ -88,18 +88,18 @@ loop do
 
   loan_duration = (loan_duration_years * 12) + loan_duration_months.to_i
 
-  # Formula -----------
+# Formula -----------
 
   monthly_payment = loan_amount * (monthly_interest_rate / (1 -
   (1 + monthly_interest_rate)**(-loan_duration)))
 
-  # Total cost & Total interest -----------
+# Total cost & Total interest -----------
 
   total_cost = monthly_payment * loan_duration
 
   total_interest = total_cost - loan_amount
 
-  # Results -----------
+# Results -----------
   line_break
   prompt("Monthly payment: $#{(format '%.2f', monthly_payment.to_f)}")
   prompt("Total cost: $#{format('%.2f', total_cost.to_f)}")
