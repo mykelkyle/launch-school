@@ -11,34 +11,19 @@ def line_break
 end
 
 def prompt_name
-
   prompt("Welcome to the Mortgage Calculator! Please enter your name: ")
 
-  name = ''
   loop do
     name = gets.chomp
     if name.strip.empty?
       prompt("Make sure to enter a valid name.")
     else
-      break
+      return prompt("Hi there, #{name}!")
     end
   end
-  prompt("Hi there, #{name}!")
 end
 
-
-line_break
-prompt_name
-
-
-# Loan Amount -----------
-
-loop do
-  loan_amount = ''
-  apr = ''
-  loan_duration_years = ''
-  loan_duration_months = ''
-
+def prompt_loan_amount
   loop do
     prompt("What is the loan amount?")
     loan_amount_input = gets.chomp
@@ -51,35 +36,50 @@ loop do
     end
 
     if number?(loan_amount.to_s) && loan_amount > 0
-      break
+      return loan_amount
     else
       prompt("Invalid input, try again. Please enter a positive number.")
     end
   end
+end
 
-  # APR -----------
-
+def prompt_apr
   loop do
     prompt("What is your APR%?")
     apr = gets.to_i
 
     if number?(apr.to_s) && apr > 0
-      break
+      return  monthly_interest_rate = (apr.to_f / 100) / 12
     else
       prompt("Invalid input, try again. Please enter a positive number.")
     end
   end
+end
 
-  monthly_interest_rate = (apr.to_f / 100) / 12
+line_break
+prompt_name
 
-  # Loan Duration -----------
+
+# MAIN LOOP
+
+loop do
+  loan_duration_years = ''
+  loan_duration_months = ''
+
+  loan_amount = prompt_loan_amount
+  apr = prompt_apr
+
+
+
+
+
 
   loop do
     prompt("What is the loan duration? (Years/Months)")
     prompt("Years:")
     loan_duration_years = gets.to_i
 
-    if number?(loan_duration_years.to_s) && loan_duration_years > 0
+    if number?(loan_duration_years.to_s) && loan_duration_years >= 0
       break
     else
       prompt("Invalid input, try again. Please enter a positive number.")
@@ -88,23 +88,27 @@ loop do
 
   loop do
     prompt("Months:")
-    loan_duration_months = gets.chomp
+    loan_duration_months = gets.to_i
 
-    if number?(loan_duration_months) && (loan_duration_months.to_i < 12 &&
-    loan_duration_months.to_i >= 0)
-      break
+    if number?(loan_duration_months.to_s) && (loan_duration_months < 12 &&
+    loan_duration_months >= 0)
+      if loan_duration_years == 0 && loan_duration_months == 0
+        prompt("Invalid input, try again. Loan duration must be at least 1 month long.")
+      else
+        break
+      end
     else
       prompt("Invalid input, try again.
       Please enter a number between 0 and 11.")
     end
   end
 
-  loan_duration = (loan_duration_years * 12) + loan_duration_months.to_i
+  loan_duration = (loan_duration_years * 12) + loan_duration_months
 
   # Formula -----------
 
-  monthly_payment = loan_amount * (monthly_interest_rate / (1 -
-  (1 + monthly_interest_rate)**(-loan_duration)))
+  monthly_payment = loan_amount * (apr / (1 -
+  (1 + apr)**(-loan_duration)))
 
   # Total cost & Total interest -----------
 
@@ -125,4 +129,4 @@ loop do
 end
 
 line_break
-prompt("Thank you for using the Mortgage Calculator! Goodbye, #{name}!")
+prompt("Thank you for using the Mortgage Calculator! Goodbye!")
