@@ -85,34 +85,33 @@ def prompt_duration
   end
 end
 
-line_break
-prompt_name
-
-# MAIN LOOP
-
-loop do
-  loan_duration_years = ''
-  loan_duration_months = ''
-
-  loan_amount = prompt_loan_amount
-  apr = prompt_apr
-  loan_duration = prompt_duration
-
-
+def display_results(loan_amount, apr, loan_duration)
   monthly_payment = loan_amount * (apr / (1 -
   (1 + apr)**(-loan_duration)))
-
-  # Total cost & Total interest -----------
-
   total_cost = monthly_payment * loan_duration
-
   total_interest = total_cost - loan_amount
 
-  # Results -----------
   line_break
   prompt("Monthly payment: $#{(format '%.2f', monthly_payment.to_f)}")
   prompt("Total cost: $#{format('%.2f', total_cost.to_f)}")
   prompt("Total interest: $#{format('%.2f', total_interest.to_f)}")
+end
+
+
+# MAIN PROGRAM
+
+line_break
+prompt_name
+
+loop do
+  loan_amount = prompt_loan_amount
+  apr = prompt_apr
+  loan_duration = prompt_duration
+
+  # Results -----------
+
+  display_results(loan_amount, apr, loan_duration)
+
 
   prompt("Would you like to perform another calculation? (Y to continue)")
 
