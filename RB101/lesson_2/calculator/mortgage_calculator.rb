@@ -49,7 +49,36 @@ def prompt_apr
     apr = gets.to_i
 
     if number?(apr.to_s) && apr > 0
-      return  monthly_interest_rate = (apr.to_f / 100) / 12
+      return monthly_interest_rate = (apr.to_f / 100) / 12
+    else
+      prompt("Invalid input, try again. Please enter a positive number.")
+    end
+  end
+end
+
+def prompt_duration
+  loop do
+    prompt("What is the loan duration? (Years/Months)")
+    prompt("Years:")
+    loan_duration_years = gets.to_i
+
+    if number?(loan_duration_years.to_s) && loan_duration_years >= 0
+      loop do
+        prompt("Months:")
+        loan_duration_months = gets.to_i
+
+        if number?(loan_duration_months.to_s) && (loan_duration_months < 12 &&
+        loan_duration_months >= 0)
+          if loan_duration_years == 0 && loan_duration_months == 0
+            prompt("Invalid input, try again. Loan duration must be at least 1 month long.")
+          else
+            return loan_duration = (loan_duration_years * 12) + loan_duration_months
+          end
+        else
+          prompt("Invalid input, try again.
+      Please enter a number between 0 and 11.")
+        end
+      end
     else
       prompt("Invalid input, try again. Please enter a positive number.")
     end
@@ -59,7 +88,6 @@ end
 line_break
 prompt_name
 
-
 # MAIN LOOP
 
 loop do
@@ -68,44 +96,8 @@ loop do
 
   loan_amount = prompt_loan_amount
   apr = prompt_apr
+  loan_duration = prompt_duration
 
-
-
-
-
-
-  loop do
-    prompt("What is the loan duration? (Years/Months)")
-    prompt("Years:")
-    loan_duration_years = gets.to_i
-
-    if number?(loan_duration_years.to_s) && loan_duration_years >= 0
-      break
-    else
-      prompt("Invalid input, try again. Please enter a positive number.")
-    end
-  end
-
-  loop do
-    prompt("Months:")
-    loan_duration_months = gets.to_i
-
-    if number?(loan_duration_months.to_s) && (loan_duration_months < 12 &&
-    loan_duration_months >= 0)
-      if loan_duration_years == 0 && loan_duration_months == 0
-        prompt("Invalid input, try again. Loan duration must be at least 1 month long.")
-      else
-        break
-      end
-    else
-      prompt("Invalid input, try again.
-      Please enter a number between 0 and 11.")
-    end
-  end
-
-  loan_duration = (loan_duration_years * 12) + loan_duration_months
-
-  # Formula -----------
 
   monthly_payment = loan_amount * (apr / (1 -
   (1 + apr)**(-loan_duration)))
