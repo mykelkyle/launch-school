@@ -116,9 +116,11 @@ def calculate_again?
   prompt("Would you like to perform another calculation? (Y to continue)")
   response = gets.chomp
   if response.downcase.start_with?('y')
-    return true
+    true
   else
-    return false
+    line_break
+    prompt("Thank you for using the Mortgage Calculator! Goodbye!")
+    false
   end
 end
 
@@ -139,6 +141,3 @@ loop do
 
   break unless calculate_again?
 end
-
-line_break
-prompt("Thank you for using the Mortgage Calculator! Goodbye!")
