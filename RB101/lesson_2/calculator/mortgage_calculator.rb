@@ -46,10 +46,10 @@ end
 def prompt_apr
   loop do
     prompt("What is your APR%?")
-    apr = gets.chomp
+    apr = gets.chomp.to_i
 
     if number?(apr.to_s) && apr >= 0
-      return (apr.to_f / 100) / 12
+      return apr
     else
       prompt("Invalid input, try again. Please enter a positive number.")
     end
@@ -95,8 +95,9 @@ def calculate_duration
 end
 
 def display_results(loan_amount, apr, loan_duration)
-  monthly_payment = loan_amount * (apr / (1 -
-  (1 + apr)**(-loan_duration)))
+  monthly_interest = calculate_monthly_interest(apr)
+  monthly_payment = loan_amount * (monthly_interest / (1 -
+  (1 + monthly_interest)**(-loan_duration)))
 
   if apr == 0
     monthly_payment = loan_amount / loan_duration
@@ -112,6 +113,9 @@ def display_results(loan_amount, apr, loan_duration)
   line_break
 end
 
+def calculate_monthly_interest(apr)
+  monthly_interest = (apr.to_f / 100) / 12
+end
 # MAIN PROGRAM
 
 line_break
