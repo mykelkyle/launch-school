@@ -10,6 +10,10 @@ def line_break
   prompt("-" * 60)
 end
 
+def remove_comma(string)
+  string.gsub(",", "")
+end
+
 def prompt_name
   prompt("Welcome to the Mortgage Calculator! Please enter your name: ")
 
@@ -26,14 +30,8 @@ end
 def prompt_loan_amount
   loop do
     prompt("What is the loan amount?")
-    loan_amount_input = gets.chomp
-    if loan_amount_input.include?(",")
-      prompt("Invalid input, try again. Please do not enter commas.
-      (E.g. 1000 instead of 1,000)")
-      next
-    else
-      loan_amount = loan_amount_input.to_i
-    end
+    input = gets.chomp
+    loan_amount = remove_comma(input).to_i
 
     if number?(loan_amount.to_s) && loan_amount > 0
       return loan_amount
@@ -103,14 +101,11 @@ def display_results(loan_amount, apr, loan_duration)
     monthly_payment = loan_amount / loan_duration
   end
 
-  line_break
   prompt("RESULTS:")
-  line_break
   prompt("Loan Amount: $#{format('%.2f', loan_amount.to_f)}")
   prompt("APR: #{apr}%")
   prompt("Loan Duration: #{loan_duration} months")
   prompt("Monthly Payment: $#{format('%.2f', monthly_payment.to_f)}")
-  line_break
 end
 
 def calculate_monthly_interest(apr)
@@ -128,7 +123,9 @@ loop do
   prompt("What is the loan duration? (Years/Months)")
   loan_duration = calculate_duration
 
+  line_break
   display_results(loan_amount, apr, loan_duration)
+  line_break
 
   prompt("Would you like to perform another calculation? (Y to continue)")
   response = gets.chomp
