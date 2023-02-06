@@ -90,7 +90,7 @@ def calculate_duration
     prompt("Invalid input, try again.
     Loan duration must be at least 1 month long.")
   else
-    return (loan_duration_years * 12) + loan_duration_months
+    (loan_duration_years * 12) + loan_duration_months
   end
 end
 
@@ -114,8 +114,9 @@ def display_results(loan_amount, apr, loan_duration)
 end
 
 def calculate_monthly_interest(apr)
-  monthly_interest = (apr.to_f / 100) / 12
+  (apr.to_f / 100) / 12
 end
+
 # MAIN PROGRAM
 
 line_break
@@ -124,47 +125,15 @@ prompt_name
 loop do
   loan_amount = prompt_loan_amount
   apr = prompt_apr
-  p apr
   prompt("What is the loan duration? (Years/Months)")
   loan_duration = calculate_duration
 
   display_results(loan_amount, apr, loan_duration)
 
   prompt("Would you like to perform another calculation? (Y to continue)")
-
   response = gets.chomp
   break unless response.downcase.start_with?('y')
 end
 
 line_break
 prompt("Thank you for using the Mortgage Calculator! Goodbye!")
-
-
-# def calculate_duration
-#   loop do
-#     prompt("Years:")
-#     loan_duration_years = gets.to_i
-
-#     if number?(loan_duration_years.to_s) && loan_duration_years >= 0
-#       loop do
-#         prompt("Months:")
-#         loan_duration_months = gets.to_i
-
-#         if number?(loan_duration_months.to_s) && (loan_duration_months < 12 &&
-#         loan_duration_months >= 0)
-#           if loan_duration_years == 0 && loan_duration_months == 0
-#             prompt("Invalid input, try again.
-#             Loan duration must be at least 1 month long.")
-#           else
-#             return (loan_duration_years * 12) + loan_duration_months
-#           end
-#         else
-#           prompt("Invalid input, try again.
-#       Please enter a number between 0 and 11.")
-#         end
-#       end
-#     else
-#       prompt("Invalid input, try again. Please enter a positive number.")
-#     end
-#   end
-# end
