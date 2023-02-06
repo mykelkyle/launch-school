@@ -46,57 +46,71 @@ end
 def prompt_apr
   loop do
     prompt("What is your APR%?")
-    apr = gets.to_i
+    apr = gets.chomp
 
-    if number?(apr.to_s) && apr > 0
-      return monthly_interest_rate = (apr.to_f / 100) / 12
+    if number?(apr.to_s) && apr >= 0
+      return (apr.to_f / 100) / 12
     else
       prompt("Invalid input, try again. Please enter a positive number.")
     end
   end
 end
 
-def prompt_duration
+def prompt_years
   loop do
-    prompt("What is the loan duration? (Years/Months)")
     prompt("Years:")
     loan_duration_years = gets.to_i
 
     if number?(loan_duration_years.to_s) && loan_duration_years >= 0
-      loop do
-        prompt("Months:")
-        loan_duration_months = gets.to_i
-
-        if number?(loan_duration_months.to_s) && (loan_duration_months < 12 &&
-        loan_duration_months >= 0)
-          if loan_duration_years == 0 && loan_duration_months == 0
-            prompt("Invalid input, try again. Loan duration must be at least 1 month long.")
-          else
-            return loan_duration = (loan_duration_years * 12) + loan_duration_months
-          end
-        else
-          prompt("Invalid input, try again.
-      Please enter a number between 0 and 11.")
-        end
-      end
+      return loan_duration_years
     else
       prompt("Invalid input, try again. Please enter a positive number.")
     end
+  end
+end
+
+def prompt_months
+  loop do
+    prompt("Months:")
+    loan_duration_months = gets.to_i
+
+    if number?(loan_duration_months.to_s) && (loan_duration_months < 12 &&
+    loan_duration_months >= 0)
+      return loan_duration_months
+    else
+      prompt("Invalid input, try again. Please enter a positive number.")
+    end
+  end
+end
+
+def calculate_duration
+  loan_duration_years = prompt_years
+  loan_duration_months = prompt_months
+  if loan_duration_years == 0 && loan_duration_months == 0
+    prompt("Invalid input, try again.
+    Loan duration must be at least 1 month long.")
+  else
+    return (loan_duration_years * 12) + loan_duration_months
   end
 end
 
 def display_results(loan_amount, apr, loan_duration)
   monthly_payment = loan_amount * (apr / (1 -
   (1 + apr)**(-loan_duration)))
-  total_cost = monthly_payment * loan_duration
-  total_interest = total_cost - loan_amount
+
+  if apr == 0
+    monthly_payment = loan_amount / loan_duration
+  end
 
   line_break
-  prompt("Monthly payment: $#{(format '%.2f', monthly_payment.to_f)}")
-  prompt("Total cost: $#{format('%.2f', total_cost.to_f)}")
-  prompt("Total interest: $#{format('%.2f', total_interest.to_f)}")
+  prompt("RESULTS:")
+  line_break
+  prompt("Loan Amount: $#{format('%.2f', loan_amount.to_f)}")
+  prompt("APR: #{apr}%")
+  prompt("Loan Duration: #{loan_duration} months")
+  prompt("Monthly Payment: $#{format('%.2f', monthly_payment.to_f)}")
+  line_break
 end
-
 
 # MAIN PROGRAM
 
@@ -106,12 +120,11 @@ prompt_name
 loop do
   loan_amount = prompt_loan_amount
   apr = prompt_apr
-  loan_duration = prompt_duration
-
-  # Results -----------
+  p apr
+  prompt("What is the loan duration? (Years/Months)")
+  loan_duration = calculate_duration
 
   display_results(loan_amount, apr, loan_duration)
-
 
   prompt("Would you like to perform another calculation? (Y to continue)")
 
@@ -121,3 +134,33 @@ end
 
 line_break
 prompt("Thank you for using the Mortgage Calculator! Goodbye!")
+
+
+# def calculate_duration
+#   loop do
+#     prompt("Years:")
+#     loan_duration_years = gets.to_i
+
+#     if number?(loan_duration_years.to_s) && loan_duration_years >= 0
+#       loop do
+#         prompt("Months:")
+#         loan_duration_months = gets.to_i
+
+#         if number?(loan_duration_months.to_s) && (loan_duration_months < 12 &&
+#         loan_duration_months >= 0)
+#           if loan_duration_years == 0 && loan_duration_months == 0
+#             prompt("Invalid input, try again.
+#             Loan duration must be at least 1 month long.")
+#           else
+#             return (loan_duration_years * 12) + loan_duration_months
+#           end
+#         else
+#           prompt("Invalid input, try again.
+#       Please enter a number between 0 and 11.")
+#         end
+#       end
+#     else
+#       prompt("Invalid input, try again. Please enter a positive number.")
+#     end
+#   end
+# end
