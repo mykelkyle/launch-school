@@ -112,6 +112,16 @@ def calculate_monthly_interest(apr)
   (apr.to_f / 100) / 12
 end
 
+def calculate_again?
+  prompt("Would you like to perform another calculation? (Y to continue)")
+  response = gets.chomp
+  if response.downcase.start_with?('y')
+    return true
+  else
+    return false
+  end
+end
+
 # MAIN PROGRAM
 
 line_break
@@ -127,9 +137,7 @@ loop do
   display_results(loan_amount, apr, loan_duration)
   line_break
 
-  prompt("Would you like to perform another calculation? (Y to continue)")
-  response = gets.chomp
-  break unless response.downcase.start_with?('y')
+  break unless calculate_again?
 end
 
 line_break
