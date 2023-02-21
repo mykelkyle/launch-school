@@ -124,7 +124,7 @@ def calculate_again?
   end
 end
 
-# MAIN PROGRAM
+# THE PROGRAM
 
 line_break
 prompt_name
