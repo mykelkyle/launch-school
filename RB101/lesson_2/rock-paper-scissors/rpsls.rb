@@ -17,7 +17,7 @@ def prompt(message)
 end
 
 def print_divider
-  puts ("-" * 40)
+  puts("-" * 40)
 end
 
 def display_score
@@ -80,8 +80,7 @@ def is_shortcut?(choice)
   (choice.length == 1 || choice.length == 2)
 end
 
-def convert_letter(choice)
-
+def convert_shortcut(choice)
   VALID_CHOICES.each do |value|
     if value.start_with?(choice)
       choice = value.to_s
@@ -98,40 +97,47 @@ end
 # MAIN LOOP -----
 
 loop do
-  choice = ""
+
+  $player_score = 0
+  $computer_score = 0
 
   loop do
-    display_choices
-    choice = gets.chomp
+    choice = ""
 
-    if VALID_CHOICES.include?(choice.to_sym)
-      break
-    elsif is_shortcut?(choice)
-      choice = convert_letter(choice)
-      if choice.class == Array
-        prompt("Invalid choice. Try again.")
-        next
-      else
+    loop do
+      display_choices
+      choice = gets.chomp
+
+      if VALID_CHOICES.include?(choice.to_sym)
         break
+      elsif is_shortcut?(choice)
+        choice = convert_shortcut(choice)
+        if choice.class == Array
+          prompt("Invalid choice. Try again.")
+          next
+        else
+          break
+        end
+      else
+        prompt("Invalid choice. Try again.")
       end
-    else
-      prompt("Invalid choice. Try again.")
+    end
+
+    computer_choice = VALID_CHOICES.sample
+    print_divider
+    prompt("You chose: #{choice}; Computer chose: #{computer_choice}")
+    display_results(choice, computer_choice)
+    if $player_score == 3
+      print_pwins
+      break
+    elsif $computer_score == 3
+      print_cwins
+      break
     end
   end
-
-  computer_choice = VALID_CHOICES.sample
-  print_divider
-  prompt("You chose: #{choice}; Computer chose: #{computer_choice}")
-  display_results(choice, computer_choice)
-  if $player_score == 3
-    print_pwins
-    break
-  elsif $computer_score == 3
-    print_cwins
-    break
-  end
-
   play_again?
   answer = gets.chomp
   break unless answer.downcase.start_with?("y")
 end
+
+prompt("Thanks for playing, goodbye!")
