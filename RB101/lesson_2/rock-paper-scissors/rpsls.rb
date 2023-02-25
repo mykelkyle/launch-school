@@ -71,10 +71,10 @@ end
 def display_choices
   choices = VALID_CHOICES.join(', ')
   prompt("Choose one: #{choices}")
-  prompt("Shortcut: 'r' for rock, 'sp' for spock, etc.")
+  prompt("Shortcut: 'r' for rock, 's' for scissors, 'sp' for spock, etc.")
 end
 
-def is_shortcut?(choice)
+def shortcut?(choice)
   (choice.length == 1 || choice.length == 2)
 end
 
@@ -83,7 +83,6 @@ def convert_shortcut(choice)
     if value.start_with?(choice)
       choice = value.to_s
       return choice
-      break
     end
   end
 end
@@ -95,7 +94,6 @@ end
 # MAIN LOOP -----
 
 loop do
-
   scores = [0, 0]
 
   loop do
@@ -107,7 +105,7 @@ loop do
 
       if VALID_CHOICES.include?(choice.to_sym)
         break
-      elsif is_shortcut?(choice)
+      elsif shortcut?(choice)
         choice = convert_shortcut(choice)
         if choice.class == Array
           prompt("Invalid choice. Try again.")
