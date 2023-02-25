@@ -39,6 +39,13 @@ def increment_cscore
   print_divider
 end
 
+def print_tie
+  prompt("It's a tie!")
+  print_divider
+  display_score
+  print_divider
+end
+
 def win?(player, computer)
   OUTCOMES[player.to_sym].include?(computer.to_s)
 end
@@ -51,7 +58,7 @@ def display_results(player, computer)
     prompt("Computer won!")
     increment_cscore
   else
-    prompt("It's a tie!")
+    print_tie
   end
 end
 
@@ -66,6 +73,7 @@ end
 def display_choices
   choices = VALID_CHOICES.join(', ')
   prompt("Choose one: #{choices}")
+  prompt("Shortcut: 'r' for rock, 'sp' for spock, etc.")
 end
 
 def is_shortcut?(choice)
@@ -112,6 +120,7 @@ loop do
   end
 
   computer_choice = VALID_CHOICES.sample
+  print_divider
   prompt("You chose: #{choice}; Computer chose: #{computer_choice}")
   display_results(choice, computer_choice)
   if $player_score == 3
