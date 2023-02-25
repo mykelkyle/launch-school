@@ -7,8 +7,6 @@ OUTCOMES = {
 }
 
 VALID_CHOICES = OUTCOMES.keys
-$player_score = 0
-$computer_score = 0
 
 # METHODS -----
 
@@ -20,29 +18,29 @@ def print_divider
   puts("-" * 40)
 end
 
-def display_score
-  prompt("Player Score: #{$player_score}")
-  prompt("Computer Score: #{$computer_score}")
+def display_score(scores)
+  prompt("Player Score: #{scores[0]}")
+  prompt("Computer Score: #{scores[1]}")
 end
 
-def increment_pscore
-  $player_score += 1
+def increment_pscore(scores)
+  scores[0] += 1
   print_divider
-  display_score
-  print_divider
-end
-
-def increment_cscore
-  $computer_score += 1
-  print_divider
-  display_score
+  display_score(scores)
   print_divider
 end
 
-def print_tie
+def increment_cscore(scores)
+  scores[1] += 1
+  print_divider
+  display_score(scores)
+  print_divider
+end
+
+def print_tie(scores)
   prompt("It's a tie!")
   print_divider
-  display_score
+  display_score(scores)
   print_divider
 end
 
@@ -50,15 +48,15 @@ def win?(player, computer)
   OUTCOMES[player.to_sym].include?(computer.to_s)
 end
 
-def display_results(player, computer)
+def display_results(player, computer, scores)
   if win?(player, computer)
     prompt("You won!")
-    increment_pscore
+    increment_pscore(scores)
   elsif win?(computer, player)
     prompt("Computer won!")
-    increment_cscore
+    increment_cscore(scores)
   else
-    print_tie
+    print_tie(scores)
   end
 end
 
@@ -98,8 +96,7 @@ end
 
 loop do
 
-  $player_score = 0
-  $computer_score = 0
+  scores = [0, 0]
 
   loop do
     choice = ""
@@ -126,11 +123,11 @@ loop do
     computer_choice = VALID_CHOICES.sample
     print_divider
     prompt("You chose: #{choice}; Computer chose: #{computer_choice}")
-    display_results(choice, computer_choice)
-    if $player_score == 3
+    display_results(choice, computer_choice, scores)
+    if scores[0] == 3
       print_pwins
       break
-    elsif $computer_score == 3
+    elsif scores[1] == 3
       print_cwins
       break
     end
