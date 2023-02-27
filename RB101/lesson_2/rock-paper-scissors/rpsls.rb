@@ -71,7 +71,7 @@ end
 def display_choices
   choices = VALID_CHOICES.join(', ')
   prompt("Choose one: #{choices}")
-  prompt("Shortcut: 'r' for rock, 's' for scissors, 'sp' for spock, etc.")
+  prompt("Shortcut: 'r' for rock, 'sc' for scissors, 'sp' for spock, etc.")
 end
 
 def shortcut?(choice)
@@ -91,6 +91,29 @@ def play_again?
   prompt("Do you want to play again? (y) for yes")
 end
 
+def get_choice
+  choice = gets.chomp.downcase
+end
+
+def validate_input(choice)
+  loop do
+
+    if VALID_CHOICES.include?(choice.to_sym)
+      return choice
+    elsif shortcut?(choice)
+      choice = convert_shortcut(choice)
+      if choice.class == Array
+        prompt("Invalid choice. Try again.")
+        next
+      else
+        return choice
+      end
+    else
+      prompt("Invalid choice. Try again.")
+    end
+  end
+end
+
 # MAIN LOOP -----
 
 loop do
@@ -98,25 +121,8 @@ loop do
 
   loop do
     choice = ""
-
-    loop do
-      display_choices
-      choice = gets.chomp
-
-      if VALID_CHOICES.include?(choice.to_sym)
-        break
-      elsif shortcut?(choice)
-        choice = convert_shortcut(choice)
-        if choice.class == Array
-          prompt("Invalid choice. Try again.")
-          next
-        else
-          break
-        end
-      else
-        prompt("Invalid choice. Try again.")
-      end
-    end
+    display_choices
+    choice = validate_input(get_choice)
 
     computer_choice = VALID_CHOICES.sample
     print_divider
