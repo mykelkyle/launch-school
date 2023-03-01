@@ -19,29 +19,22 @@ def print_divider
 end
 
 def display_score(scores)
+  print_divider
   prompt("Player Score: #{scores[0]}")
   prompt("Computer Score: #{scores[1]}")
+  print_divider
 end
 
-def increment_pscore(scores)
+def increment_player_score(scores)
   scores[0] += 1
-  print_divider
-  display_score(scores)
-  print_divider
 end
 
-def increment_cscore(scores)
+def increment_computer_score(scores)
   scores[1] += 1
-  print_divider
-  display_score(scores)
-  print_divider
 end
 
 def print_tie(scores)
   prompt("It's a tie!")
-  print_divider
-  display_score(scores)
-  print_divider
 end
 
 def win?(player, computer)
@@ -51,20 +44,20 @@ end
 def display_results(player, computer, scores)
   if win?(player, computer)
     prompt("You won!")
-    increment_pscore(scores)
+    increment_player_score(scores)
   elsif win?(computer, player)
     prompt("Computer won!")
-    increment_cscore(scores)
+    increment_computer_score(scores)
   else
     print_tie(scores)
   end
 end
 
-def print_pwins
+def print_player_wins
   prompt("You reached 3 points. Congratulations, you are the winner! :)")
 end
 
-def print_cwins
+def print_computer_wins
   prompt("The computer reached 3 points. You lose! :(")
 end
 
@@ -92,25 +85,33 @@ def play_again?
 end
 
 def get_choice
-  choice = gets.chomp.downcase
+  gets.chomp.downcase
 end
 
 def validate_input(choice)
   loop do
-
     if VALID_CHOICES.include?(choice.to_sym)
-      return choice
+      return choice unless choice.class == Array
+      return nil
     elsif shortcut?(choice)
       choice = convert_shortcut(choice)
-      if choice.class == Array
-        prompt("Invalid choice. Try again.")
-        next
-      else
-        return choice
-      end
+      return choice unless choice.class == Array
+      return nil
     else
-      prompt("Invalid choice. Try again.")
+      return nil
     end
+  end
+end
+
+def grand_winner?(scores)
+  scores[0] == 3 || scores[1] == 3
+end
+
+def display_grand_winner(scores)
+  if scores[0] == 3
+    print_player_wins
+  elsif scores[1] == 3
+    print_computer_wins
   end
 end
 
@@ -120,19 +121,22 @@ loop do
   scores = [0, 0]
 
   loop do
-    choice = ""
     display_choices
     choice = validate_input(get_choice)
+    if choice.nil?
+      prompt("Invalid choice. Try again.")
+      print_divider
+      next
+    end
 
     computer_choice = VALID_CHOICES.sample
     print_divider
     prompt("You chose: #{choice}; Computer chose: #{computer_choice}")
     display_results(choice, computer_choice, scores)
-    if scores[0] == 3
-      print_pwins
-      break
-    elsif scores[1] == 3
-      print_cwins
+    display_score(scores)
+
+    if grand_winner?(scores)
+      display_grand_winner(scores)
       break
     end
   end
