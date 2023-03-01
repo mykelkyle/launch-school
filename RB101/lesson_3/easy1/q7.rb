@@ -9,3 +9,7 @@ flintstones << ["BamBam", "Pebbles"]
 ["Fred", "Wilma", ["Barney", "Betty"], ["BamBam", "Pebbles"]]
 
 # Make this into an un-nested array.
+
+flintstones.flatten!
+
+p flintstones
