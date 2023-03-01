@@ -86,7 +86,7 @@ def play_again?
   prompt("Do you want to play again? (y) for yes")
   answer = gets.chomp
   if answer.downcase.start_with?("y")
-    return true
+    true
   end
 end
 
@@ -95,19 +95,17 @@ def get_choice
 end
 
 def validate_input(choice)
-    if choice.downcase == "s"
-      prompt("Please specify 'sc' for scissors and 'sp' for spock.")
-      return nil
-    elsif VALID_CHOICES.include?(choice.to_sym)
-      return choice unless choice.class == Array
-      return nil
-    elsif shortcut?(choice)
-      choice = convert_shortcut(choice)
-      return choice unless choice.class == Array
-      return nil
-    else
-      return nil
-    end
+  if choice.downcase == "s"
+    prompt("Please specify 'sc' for scissors and 'sp' for spock.")
+    nil
+  elsif VALID_CHOICES.include?(choice.to_sym)
+    return choice unless choice.class == Array
+    nil
+  elsif shortcut?(choice)
+    choice = convert_shortcut(choice)
+    return choice unless choice.class == Array
+    nil
+  end
 end
 
 def grand_winner?(scores)
