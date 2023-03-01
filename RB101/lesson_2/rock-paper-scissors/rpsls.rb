@@ -14,15 +14,15 @@ def prompt(message)
   puts "=> #{message}"
 end
 
-def print_divider
+def display_divider
   puts("-" * 40)
 end
 
 def display_score(scores)
-  print_divider
+  display_divider
   prompt("Player Score: #{scores[0]}")
   prompt("Computer Score: #{scores[1]}")
-  print_divider
+  display_divider
 end
 
 def increment_player_score(scores)
@@ -33,23 +33,25 @@ def increment_computer_score(scores)
   scores[1] += 1
 end
 
-def print_tie(scores)
-  prompt("It's a tie!")
-end
-
 def win?(player, computer)
   OUTCOMES[player.to_sym].include?(computer.to_s)
 end
 
-def display_results(player, computer, scores)
+def display_results(player, computer)
   if win?(player, computer)
     prompt("You won!")
-    increment_player_score(scores)
   elsif win?(computer, player)
     prompt("Computer won!")
-    increment_computer_score(scores)
   else
-    print_tie(scores)
+    prompt("It's a tie!")
+  end
+end
+
+def update_score(player, computer, scores)
+  if win?(player, computer)
+    increment_player_score(scores)
+  elsif win?(computer, player)
+    increment_computer_score(scores)
   end
 end
 
@@ -82,6 +84,10 @@ end
 
 def play_again?
   prompt("Do you want to play again? (y) for yes")
+  answer = gets.chomp
+  if answer.downcase.start_with?("y")
+    return true
+  end
 end
 
 def get_choice
@@ -89,8 +95,10 @@ def get_choice
 end
 
 def validate_input(choice)
-  loop do
-    if VALID_CHOICES.include?(choice.to_sym)
+    if choice.downcase == "s"
+      prompt("Please specify 'sc' for scissors and 'sp' for spock.")
+      return nil
+    elsif VALID_CHOICES.include?(choice.to_sym)
       return choice unless choice.class == Array
       return nil
     elsif shortcut?(choice)
@@ -100,7 +108,6 @@ def validate_input(choice)
     else
       return nil
     end
-  end
 end
 
 def grand_winner?(scores)
@@ -115,6 +122,10 @@ def display_grand_winner(scores)
   end
 end
 
+def display_selected_choices(choice, computer_choice)
+  prompt("You chose: #{choice}; Computer chose: #{computer_choice}")
+end
+
 # MAIN LOOP -----
 
 loop do
@@ -124,15 +135,17 @@ loop do
     display_choices
     choice = validate_input(get_choice)
     if choice.nil?
-      prompt("Invalid choice. Try again.")
-      print_divider
+      prompt("Invalid choice. Please try again.")
+      display_divider
       next
     end
 
     computer_choice = VALID_CHOICES.sample
-    print_divider
-    prompt("You chose: #{choice}; Computer chose: #{computer_choice}")
-    display_results(choice, computer_choice, scores)
+
+    display_divider
+    display_selected_choices(choice, computer_choice)
+    display_results(choice, computer_choice)
+    update_score(choice, computer_choice, scores)
     display_score(scores)
 
     if grand_winner?(scores)
@@ -140,9 +153,7 @@ loop do
       break
     end
   end
-  play_again?
-  answer = gets.chomp
-  break unless answer.downcase.start_with?("y")
+  break unless play_again?
 end
 
 prompt("Thanks for playing, goodbye!")
