@@ -132,21 +132,57 @@ def find_winning_square(board)
   end
 end
 
+def gets_first_move
+  answer = ""
+  loop do
+    prompt "Who should go first? ('P' - Player | 'C' - Computer)"
+    answer = gets.chomp
+    break if answer.downcase.start_with?("p") || answer.downcase.start_with?("c")
+    prompt "Sorry that's not a valid choice, try again."
+  end
+  answer
+end
+
+def place_piece!(board, current_player)
+  if current_player == "p"
+    player_places_piece!(board)
+  else
+    computer_places_piece!(board)
+  end
+end
+
+def alternate_player(current_player)
+  if current_player == "p"
+    current_player = "c"
+  else
+    current_player = "p"
+  end
+end
+
+# place_piece!
+# alternate_player
+=begin
+loop
+  display_board(board)
+  place_piece!(board, current_player)
+  current_player = alternate_player(current_player)
+  break if someone_won?(board) || board_full?(board)
+end
+=end
+
+
 # MAIN LOOP --------
 
 score = [0, 0]
+current_player = gets_first_move
+starting_player = current_player
 loop do
   board = initialize_board
-  prompt "Who should go first? ('P' - Player | 'C' - Computer)"
-  answer = gets.chomp
-
+  current_player = starting_player
   loop do
     display_board(board)
-
-    player_places_piece!(board)
-    break if someone_won?(board, score) || board_full?(board)
-
-    computer_places_piece!(board)
+    place_piece!(board, current_player)
+    current_player = alternate_player(current_player)
     break if someone_won?(board, score) || board_full?(board)
   end
 
