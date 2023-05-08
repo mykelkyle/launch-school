@@ -60,13 +60,18 @@ def player_places_piece!(board)
 end
 
 def computer_places_piece!(board)
-  if find_winning_square(board).size == 1    # attacks
-    square = find_winning_square(board)[0]
-  elsif find_at_risk_square(board).size == 1 # defends
-    square = find_at_risk_square(board)[0]
-  else                                       # random square
-    square = empty_squares(board).sample
-  end
+  winning_square = find_winning_square(board)
+  at_risk_square = find_at_risk_square(board)
+
+  square = if winning_square.size == 1                # attacks
+             winning_square[0]
+           elsif at_risk_square.size == 1             # defends
+             at_risk_square[0]
+           elsif board[5] == INITIAL_MARKER           # square 5
+             5
+           else                                       # random square
+             empty_squares(board).sample
+           end
 
   board[square] = COMPUTER_MARKER
 end
@@ -132,6 +137,8 @@ end
 score = [0, 0]
 loop do
   board = initialize_board
+  prompt "Who should go first? ('P' - Player | 'C' - Computer)"
+  answer = gets.chomp
 
   loop do
     display_board(board)
