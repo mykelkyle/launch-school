@@ -12,6 +12,10 @@ def prompt(msg)
   puts "=> #{msg}"
 end
 
+def greeting
+  prompt "Welcome to Tic-Tac-Toe, first to 5 points wins!"
+end
+
 def joinor(options)
   empty = empty_squares(options)
   return empty[0].to_s if empty.length == 1
@@ -135,9 +139,11 @@ end
 def gets_first_move
   answer = ""
   loop do
-    prompt "Who should go first? ('P' - Player | 'C' - Computer)"
+    prompt "Who should go first? ('P' - Player | 'C' - Computer | 'R' - Random)"
     answer = gets.chomp
-    break if answer.downcase.start_with?("p") || answer.downcase.start_with?("c")
+    answer = generate_random_player if answer.downcase.start_with?("r")
+    break if answer.downcase.start_with?("p") ||
+             answer.downcase.start_with?("c")
     prompt "Sorry that's not a valid choice, try again."
   end
   answer
@@ -152,28 +158,43 @@ def place_piece!(board, current_player)
 end
 
 def alternate_player(current_player)
-  if current_player == "p"
-    current_player = "c"
-  else
-    current_player = "p"
+  current_player == "p" ? "c" : "p"
+end
+
+def generate_random_player
+  ["p", "c"].sample
+end
+
+def display_turn(current_player)
+  display_name = if current_player == "p"
+                   "Player"
+                 else
+                   "Computer"
+                 end
+
+  prompt "It is the #{display_name}'s turn!"
+end
+
+def cancel_game?
+  loop do
+    prompt "Do you want to continue to the next round? (y/n)"
+    answer = gets.chomp
+    if answer.downcase.start_with?('y')
+      return false
+    elsif answer.downcase.start_with?('n')
+      return true
+    end
   end
 end
 
-# place_piece!
-# alternate_player
-=begin
-loop
-  display_board(board)
-  place_piece!(board, current_player)
-  current_player = alternate_player(current_player)
-  break if someone_won?(board) || board_full?(board)
+def increment_score(winner, score)
+  winner == "Player" ? score[0] += 1 : score[1] += 1
 end
-=end
 
-
-# MAIN LOOP --------
+# MAIN GAME LOOP --------
 
 score = [0, 0]
+greeting
 current_player = gets_first_move
 starting_player = current_player
 loop do
@@ -181,6 +202,8 @@ loop do
   current_player = starting_player
   loop do
     display_board(board)
+    display_score(score)
+    display_turn(starting_player)
     place_piece!(board, current_player)
     current_player = alternate_player(current_player)
     break if someone_won?(board, score) || board_full?(board)
@@ -190,7 +213,7 @@ loop do
 
   if someone_won?(board, score)
     winner = detect_winner(board, score)
-    winner == "Player" ? score[0] += 1 : score[1] += 1
+    increment_score(winner, score)
     prompt "#{winner} won!"
   else
     prompt "It's a tie!"
@@ -199,9 +222,7 @@ loop do
   display_score(score)
 
   break if grand_winner?(board, score)
-  prompt "Press y to continue"
-  answer = gets.chomp
-  break unless answer.downcase.start_with?('y')
+  break if cancel_game?
 end
 
 display_grand_winner(score)
