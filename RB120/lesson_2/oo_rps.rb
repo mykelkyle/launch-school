@@ -17,7 +17,7 @@ class Human < Player
     loop do
       puts "What's your name?"
       n = gets.chomp
-      break unless n.empty?
+      break unless n.empty? || n.start_with?(" ")
       puts "Sorry, must enter a value."
     end
     self.name = n
@@ -50,39 +50,39 @@ class Computer < Player
   def weighted_random_choice(choices, choice, weight)
     weighted_array = choices.dup
     weight.times { weighted_array << choice }
-    return weighted_array.sample
+    weighted_array.sample
   end
 end
 
 class R2D2 < Computer
-  def choose #always picks rock
+  def choose # always picks rock
     self.move = Rock.new("rock")
   end
 end
 
 class Hal < Computer
-  def choose #high likelihood of choosing scissors
+  def choose # high likelihood of choosing scissors
     choice = weighted_random_choice(Move::VALUES, "scissors", 3)
     self.move = Object.const_get(choice.capitalize).new(choice)
   end
 end
 
 class Chappie < Computer
-  def choose #high likelihood of choosing paper
+  def choose # high likelihood of choosing paper
     choice = weighted_random_choice(Move::VALUES, "paper", 3)
     self.move = Object.const_get(choice.capitalize).new(choice)
   end
 end
 
 class Sonny < Computer
-  def choose #only ever picks lizard or spock
+  def choose # only ever picks lizard or spock
     choice = ["lizard", "spock"].sample
     self.move = Object.const_get(choice.capitalize).new(choice)
   end
 end
 
 class NumberFive < Computer
-  def choose #picks anything except for scissors or paper
+  def choose # picks anything except for scissors or paper
     choice = ["lizard", "spock", "rock"].sample
     self.move = Object.const_get(choice.capitalize).new(choice)
   end
@@ -172,7 +172,6 @@ class Spock < Move
   end
 end
 
-
 class RPSGame
   attr_accessor :human, :computer, :history
 
@@ -234,13 +233,14 @@ class RPSGame
 
   def update_move_history
     @turn += 1
-    @history[@turn] = [[human.name, human.move.value], [computer.name, computer.move.value]]
+    @history[@turn] =
+      [[human.name, human.move.value], [computer.name, computer.move.value]]
   end
 
   def display_move_history
     puts "Game History"
     @history.each do |k, v|
-      puts "Turn #{k}: #{v[0].join(" chose ")}. #{v[1].join(" chose ")}."
+      puts "Turn #{k}: #{v[0].join(' chose ')}. #{v[1].join(' chose ')}."
     end
     divider
   end
