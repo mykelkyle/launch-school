@@ -1,4 +1,8 @@
+require "pry"
+
 class Board
+  attr_reader :squares
+
   WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
                   [[1, 4, 7], [2, 5, 8], [3, 6, 9]] + # cols
                   [[1, 5, 9], [3, 5, 7]]              # diagonals
@@ -89,9 +93,11 @@ end
 
 class Player
   attr_reader :marker
+  attr_accessor :points
 
   def initialize(marker)
     @marker = marker
+    @points = 0
   end
 end
 
@@ -113,20 +119,60 @@ class TTTGame
     clear
     display_welcome_message
     main_game
+    announce_grand_winner if someone_has_five_points?
     display_goodbye_message
   end
 
   private
+
+  def first_to_move?
+    puts "Who should go first: 1 - #{@human} | 2 - #{@computer} | 3 - Random"
+
+  end
 
   def main_game
     loop do
       display_board
       player_move
       display_result
-      break unless play_again?
+      increment_score
+      display_score
+      break if someone_has_five_points? || !play_again?
       reset
       display_play_again_message
+
     end
+  end
+
+  def announce_grand_winner
+    if @human.points == 5
+      puts "The player has reached 5 points. You win!"
+    elsif @computer.points == 5
+      puts "The computer has reached 5 points. You lose!"
+    end
+  end
+
+  def someone_has_five_points?
+    @human.points == 5 || @computer.points == 5
+  end
+
+  def increment_score
+    case board.winning_marker
+    when @human.marker
+      @human.points += 1
+    when @computer.marker
+      @computer.points += 1
+    when nil
+      return
+    end
+  end
+
+  def display_score
+    puts ""
+    puts "--- Score ---"
+    puts "Human: #{@human.points}"
+    puts "Computer: #{@computer.points}"
+    puts ""
   end
 
   def player_move
@@ -162,12 +208,16 @@ class TTTGame
     puts ""
   end
 
-  def joinor(arr)
-
+  def joinor(arr, delimiter = ", ", conjunction = " or ")
+    if arr.size == 1
+      arr[0].to_s
+    else
+      arr[0..-2].join(delimiter) + conjunction + arr[-1].to_s
+    end
   end
 
   def human_moves
-    puts "Choose a square (#{board.unmarked_keys.join(', ')}): "
+    puts "Choose a square: #{joinor(board.unmarked_keys)} "
     square = nil
     loop do
       square = gets.chomp.to_i
