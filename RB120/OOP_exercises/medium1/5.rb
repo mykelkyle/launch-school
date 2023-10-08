@@ -1,26 +1,36 @@
 class Minilang
-  attr_accessor :register, :stack
 
-  def initialize(commands)
-    @commands = commands.split()
-    @register = 0
-    @stack = []
-  end
-
-  def print
-    eval
+  def initialize(program)
+    @program = program
   end
 
   def eval
-    puts register
+    stack = []
+    register = 0
   end
 
   def push
-    @stack <<
   end
 
-  def to_s
-    @register
+  def add
+  end
+
+  def sub
+  end
+
+  def mult
+  end
+
+  def div
+  end
+
+  def mod
+  end
+
+  def pop
+  end
+
+  def print
   end
 end
 
