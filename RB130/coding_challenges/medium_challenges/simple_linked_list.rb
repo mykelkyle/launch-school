@@ -67,8 +67,4 @@ class Element
   def tail?
     @next ? false : true
   end
-
-  def next
-    @next
-  end
 end

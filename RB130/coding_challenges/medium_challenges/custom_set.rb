@@ -10,7 +10,7 @@ class CustomSet
   end
 
   def contains?(int)
-    values.include?(int) ? true : false
+    values.include?(int)
   end
 
   def common_vals(other)
