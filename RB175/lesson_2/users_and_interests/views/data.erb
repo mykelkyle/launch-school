@@ -1,0 +1,7 @@
+<p>Email: <%= @email %></p>
+<p>Interests: <%= @interests %></p>
+
+<% @names.each do |name| %>
+  <% next if name.downcase == params[:name] %>
+  <a href="/users/<%= name.downcase %>"><%= name %></a>
+<% end %>

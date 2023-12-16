@@ -1,0 +1,5 @@
+<h1>Users</h1>
+
+<% @names.each do |name| %>
+  <a href="/users/<%= name.downcase %>"><%= name %></a>
+<% end %>
