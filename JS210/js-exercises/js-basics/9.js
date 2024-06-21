@@ -1,0 +1,18 @@
+const NUMS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
+
+function integerToString(int) {
+  let str = "";
+
+  while (int > 0) {
+    let remainder = int % 10;
+    int = Math.floor(int / 10);
+
+    str = NUMS[remainder] + str;
+  }
+
+  console.log(str);
+}
+
+integerToString(4321); // "4321"
+integerToString(0); // "0"
+integerToString(5000); // "5000"
