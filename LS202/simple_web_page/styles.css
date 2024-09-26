@@ -1,0 +1,31 @@
+body {
+  background-color: #ffffe0;
+}
+
+p {
+  font-size: 24px;
+}
+
+h1 {
+  color: orange;
+  text-align: center;
+}
+
+strong {
+  color: blue;
+  text-decoration: underline;
+}
+
+em {
+  color: red;
+}
+
+.more-text {
+  color: gray;
+}
+
+#final-paragraph {
+  text-decoration: underline;
+}
+
+Study Topics Important topics you need to study: Using Web APIs to work with the DOM Understanding event-driven programming for front-end development Asynchronous JavaScript Communicating with the server through XHR and rendering the response to the page The test will contain a mix of theory and practical questions.
