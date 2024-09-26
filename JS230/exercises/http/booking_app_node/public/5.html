@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exercise 5</title>
+    <script src="javascripts/ex5.js"></script>
+    <style>
+      #new-student-form-container {
+        background-color: gray;
+        padding: 10px;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <form>
+        <h1>Schedules</h1>
+        <label for="schedule">Please select one schedule</label>
+        <select name="schedule"></select>
+        <br />
+        <label for="email">Email:</label>
+        <input name="email" />
+        <button>Submit</button>
+      </form>
+    </div>
+    <div id="new-student-form-container">
+      <form id="new-student-form">
+        <h1>Please provide new student details</h1>
+        <label for="email">Email:</label>
+        <input name="email" />
+        <br />
+        <label for="name">Name:</label>
+        <input name="name" />
+        <br />
+        <label for="booking-sequence">Booking Sequence:</label>
+        <input name="booking-sequence" />
+        <br />
+        <button>Submit</button>
+      </form>
+    </div>
+  </body>
+</html>

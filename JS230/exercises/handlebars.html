@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
+    <script src="handlebars.js"></script>
+    <script id="productTemplate" type="text/x-handlebars">
+      <li>
+        <h3>{{name}}</h3>
+        <dl>
+          <dt>Quantity:</dt>
+          <dd>{{quantity}}</dd>
+          <dt>Price:</dt>
+          <dd>
+            ${{price}}
+            {{#if on_sale}}
+            <strong>SALE!</strong>
+            {{/if}}
+          </dd>
+        </dl>
+      </li>
+    </script>
+
+    <script id="productsList" type="text/x-handlebars">
+      {{#each items}}
+      {{> productTemplate}}
+      {{/each}}
+    </script>
+  </head>
+  <body>
+    <form>
+      <label for="something"></label>
+      <input name="something" />
+      <input name="somethingelse" />
+      <button type="submit"></button>
+    </form>
+  </body>
+</html>
