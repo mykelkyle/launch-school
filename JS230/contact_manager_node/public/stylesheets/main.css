@@ -1,3 +1,50 @@
-* {
+/* * {
   border: 1px red solid;
+} */
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.42857;
+  color: #333;
+  background-color: #fff;
+  margin: 0;
+}
+
+dd {
+  margin-left: 0;
+}
+
+.hidden {
+  display: none;
+}
+
+.contact-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.contact {
+  padding: 5px;
+}
+
+.btn {
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid;
+  padding: 3px;
+  text-decoration: none;
+}
+
+.container {
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.btn:hover {
+  background-color: lightgray;
 }

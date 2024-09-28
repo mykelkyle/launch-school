@@ -10,7 +10,110 @@
     <script src="/javascripts/handlebars.js"></script>
   </head>
   <body>
-    <div id="root"></div>
-    <script src="javascripts/controller.js"></script>
+    <header class="bs-header">
+      <div class="container">
+        <h1>Contact Manager</h1>
+        <p>
+          Using Backbone.js, Localstorage, RequireJS, Handlebars and Bootstrap
+        </p>
+      </div>
+    </header>
+    <div id="toolbar" class="container">
+      <a class="btn" data-action="add">Add Contact</a>
+      <input id="search" type="text" class="search" placeholder="Search" />
+    </div>
+
+    <!-- Dynamic Content -->
+    <main id="root" class="container"></main>
+
+    <div class="container">
+      <p>
+        Developed by <a href="http://www.devsaran.com">Devsaran.com</a> and
+        <a href="http://www.239listing.com">239 Listing Real Estate</a>.
+      </p>
+    </div>
+
+    <!-- Handlebar templates -->
+    <script id="partial-contact" type="text/x-handlebars">
+      <li class="contact">
+        <div>
+        <h3>{{full_name}}</h3>
+        </div>
+        <div>
+          <dl>
+            <dt><strong>Phone Number:</strong></dt>
+            <dd>{{phone_number}}</dd>
+            <dt><strong>Email:</strong></dt>
+            <dd>{{email}}</dd>
+          </dl>
+        </div>
+        <div>
+          <a href="/api/contacts/{{id}}" data-action="edit" class="btn">Edit</a>
+          <a href="/api/contacts/{{id}}" data-action="delete" class="btn">Delete</a>
+        </div>
+      </li>
+    </script>
+
+    <script id="contacts-template" type="text/x-handlebars">
+      <ul class="container contact-list">
+        {{#if contacts}}
+        {{#each contacts}}
+        {{> partial-contact}}
+        {{/each}}
+        {{else}}
+        <div class="container">
+          <h3>There are no contacts.</h3>
+          <a class="btn" data-action="add">Add Contact</a>
+        </div>
+        {{/if}}
+      </ul>
+    </script>
+
+    <script id="add-contact-template" type="text/x-handlebars">
+      <div class="container">
+        <h2>Create Contact</h2>
+        <form action="/api/contacts" method="POST">
+          <label for="name">Full name:</label>
+          <input type="text" name="full_name">
+          <br>
+          <label for="email">Email address:</label>
+          <input type="text" name="email">
+          <br>
+          <label for="phone">Telephone number:</label>
+          <input type="text" name="phone_number">
+          <div>
+            <button type="submit">Submit</button>
+            <button data-action="cancel">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </script>
+
+    <script id="edit-contact-template" type="text/x-handlebars">
+      <div class="container">
+        <h2>Edit Contact</h2>
+        <form action="/api/contacts/{{id}}" method="PUT">
+          <label for="name">Full name:</label>
+          <input type="text" name="full_name" value="{{full_name}}">
+          <br>
+          <label for="email">Email address:</label>
+          <input type="text" name="email" value="{{email}}">
+          <br>
+          <label for="phone">Telephone number:</label>
+          <input type="text" name="phone_number" value="{{phone_number}}">
+          <div>
+            <button type="submit">Save Changes</button>
+            <button data-action="cancel">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </script>
+
+    <script id="no-matches-template" type="text/x-handlebars">
+      <div class="container">
+          <h3>No matches found.</h3>
+        </div>
+    </script>
+    <script src="javascripts/app.js" type="module"></script>
   </body>
 </html>
